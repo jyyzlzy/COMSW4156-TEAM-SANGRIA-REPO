@@ -33,7 +33,22 @@ jobs:
       working-directory: ./service-client
       run: mvn -B package --file pom.xml
       
-    - name: Build and analyze
+    - name: Build and analyze auth
+      working-directory: ./service-auth
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=jyyzlzy_COMSW4156-TEAM-SANGRIA-REPO
+
+    - name: Build and analyze operation
+      working-directory: ./service-operation
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=jyyzlzy_COMSW4156-TEAM-SANGRIA-REPO
+
+    - name: Build and analyze client
+      working-directory: ./service-client
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
