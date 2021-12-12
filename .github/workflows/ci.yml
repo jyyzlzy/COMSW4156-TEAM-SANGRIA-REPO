@@ -18,7 +18,7 @@ jobs:
     - name: Set up Java and Maven
       uses: actions/setup-java@v2
       with:
-        java-version: 8
+        java-version: 11
         distribution: 'temurin'
         
     - name: Cache SonarCloud packages
@@ -35,18 +35,6 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
           
-    - name: Test auth
-      working-directory: ./service-auth
-      run: mvn clean test --file pom.xml -DskipTests=false
-      
-    - name: Test operation
-      working-directory: ./service-operation
-      run: mvn clean test --file pom.xml -DskipTests=false
-      
-    - name: Build client
-      working-directory: ./service-client
-      run: mvn -B package --file pom.xml
-      
     - name: Build and analyze auth
       working-directory: ./service-auth
       env:
@@ -68,3 +56,15 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=jyyzlzy_COMSW4156-TEAM-SANGRIA-REPO
 
+    - name: Test auth
+      working-directory: ./service-auth
+      run: mvn clean test --file pom.xml -DskipTests=false
+      
+    - name: Test operation
+      working-directory: ./service-operation
+      run: mvn clean test --file pom.xml -DskipTests=false
+      
+    - name: Build client
+      working-directory: ./service-client
+      run: mvn -B package --file pom.xml
+      
